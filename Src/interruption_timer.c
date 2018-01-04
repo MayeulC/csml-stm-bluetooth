@@ -1,0 +1,69 @@
+#include "interruption_timer.h"
+#include "globals.h"
+#include "gpio.h"
+#include "stm32f4xx_hal.h"
+
+volatile bool interrupt_received = false;
+volatile uint32_t high_time = 0;
+volatile uint8_t duty_cycle = 255;
+
+void HAL_TIM_IC_CaptureCallback (TIM_HandleTypeDef *htim)
+{
+	if(htim != &htim5)
+		return;
+	uint32_t time = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+	__HAL_TIM_SetCounter(htim, 0);
+
+	GPIO_PinState state =  HAL_GPIO_ReadPin( GPIOA, GPIO_PIN_0);
+
+	if(state == GPIO_PIN_RESET) // we are low, therefore, we just got the high time
+	{
+		high_time = time;
+	}
+	else // time is low_time
+	{
+		if(time != 0 && high_time < 16843009 )
+		{
+			duty_cycle = (255 * high_time) / (high_time + time);
+			// 51 secondes maximum pour 1 int32.
+			// On a donc 25 secondes de dynamique max au dénominateur
+			// et 51/255 = 0.2 secondes
+		}
+		else
+		{
+			duty_cycle = 255;
+		}
+
+		interrupt_received = true;
+	}
+
+}
+/*
+void HAL_TIM_IC_CaptureCallback_bg (TIM_HandleTypeDef *htim)
+{
+	if(htim != &htim5)
+		return;
+	static uint32_t old_time = 0, low_time = 0, high_time = 0;
+	uint32_t time = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+	int i;
+
+	GPIO_PinState state =  HAL_GPIO_ReadPin( GPIOA, GPIO_PIN_0);
+
+	if(state == GPIO_PIN_RESET) // we are low, therefore, we just got the high time
+	{
+		high_time += time - old_time;
+	}
+	else // time is low_time
+	{
+		low_time +=  time - old_time;
+		++i;
+		if(i == 10)
+		{
+			duty_cycle = 255 * high_time /(low_time + high_time);
+			i=0;
+		}
+		interrupt_received = true;
+	}
+	old_time = time;
+}
+*/
