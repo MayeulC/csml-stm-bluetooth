@@ -55,32 +55,3 @@ void HAL_TIM_IC_CaptureCallback (TIM_HandleTypeDef *htim)
 	}
 
 }
-/*
-void HAL_TIM_IC_CaptureCallback_bg (TIM_HandleTypeDef *htim)
-{
-	if(htim != &htim5)
-		return;
-	static uint32_t old_time = 0, low_time = 0, high_time = 0;
-	uint32_t time = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
-	int i;
-
-	GPIO_PinState state =  HAL_GPIO_ReadPin( GPIOA, GPIO_PIN_0);
-
-	if(state == GPIO_PIN_RESET) // we are low, therefore, we just got the high time
-	{
-		high_time += time - old_time;
-	}
-	else // time is low_time
-	{
-		low_time +=  time - old_time;
-		++i;
-		if(i == 10)
-		{
-			duty_cycle = 255 * high_time /(low_time + high_time);
-			i=0;
-		}
-		interrupt_received = true;
-	}
-	old_time = time;
-}
-*/

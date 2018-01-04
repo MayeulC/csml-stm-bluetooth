@@ -72,7 +72,6 @@ C_SOURCES =  \
 ../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c \
 ../Src/main.c \
 ../Src/configPWM.c \
-../Src/configInt.c \
 ../Src/interruption_timer.c \
 ../Src/uart_custom.c \
 ../Src/sendalarm.c \

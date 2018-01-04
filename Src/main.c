@@ -130,7 +130,6 @@ int main(void)
 			uart_bt_2bytes('R',get_current_mean_duty_cycle());
 		uart_print(buf);
 	  }
-	  
   }
   /* USER CODE END WHILE */
 
