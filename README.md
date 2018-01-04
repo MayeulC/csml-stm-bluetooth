@@ -1,7 +1,7 @@
 # CSML, partie STM32
 
-## LICENSE
-Le code de ce dépot est licensié sous la license GPLv3 à l'exception des fichiers
+## LICENCE
+Le code de ce dépot est licencié sous la licence GPLv3 à l'exception des fichiers
 sous copyright STMicroelectronics. Voir le fichier LICENSE pour le texte complet
 de la GPLv3.
 
@@ -19,7 +19,7 @@ binutils
 arm-none-eabi-gcc
 arm-none-eabi-binutils
 arm-none-eabi-gdb (uniquement pour le débogage)
-openocd
+openocd (uniquement pour la programmation de la carte)
 ```
 
 ## Utilisation
